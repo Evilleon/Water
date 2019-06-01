@@ -1,0 +1,66 @@
+	private static int sum;//总帖数
+	
+	@SuppressWarnings("null")
+	public static void query() {
+		/*
+		 * 开始连接数据库
+		 */
+		   //驱动程序名
+        String driver = "com.mysql.jdbc.Driver";
+        //URL指向要访问的数据库名mydata
+        String url = "jdbc:mysql://localhost:3306/water?serverTimezone=GMT%2B8";
+        //MySQL配置时的用户名
+        String user = "root";
+        //MySQL配置时的密码
+        String password = "";
+        ArrayList<String> array = new ArrayList<String>();
+        int[] num = new int[1000];
+        for(int x=0;x<num.length;x++) {
+        	num[x]=0;
+        }
+        int i=0,j=0;
+        try {
+        	 //加载驱动程序
+            Class.forName(driver);
+            //1.getConnection()方法，连接MySQL数据库！！
+        	Connection con = DriverManager.getConnection(url,user,password);
+            if(!con.isClosed())
+            	System.out.println("Succeeded connecting to the Database!"); 
+            Statement statement = con.createStatement();
+            //预处理添加数据，其中有两个参数--“？”
+            String sql="select id from water";
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next()){
+            	if(array.size()==0)//如果ID数组为空，即刚刚进入循环
+            	{//记录该ID号，将该ID号加1
+            		array.add(rs.getString("ID"));
+            		num[i]++;
+            	}
+            	else//ID号不为空时，第二次及其以后进入循环
+            	{
+            		if((array.get(j)).equals(rs.getString("ID"))) //如果第一个ID号等于下一个ID号
+            		{
+            			num[i]++;//将该ID号数目加1
+            		}
+            		else//如果前一个个ID号不等于下一个ID号
+            		{
+            			i++;
+            			array.add(rs.getString("ID"));
+            			num[i]++;
+            			j++;
+            		}
+            	}
+            	sum++;
+            	
+            }
+            
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }finally {
+        	System.out.println(sum);
+        	System.out.println(num[5]);
+        }
+	}
+	public static void main(String[] args) {
+		king.query();
+	}
