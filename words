@@ -1,0 +1,67 @@
+private static void word() throws FileNotFoundException, UnsupportedEncodingException {
+		// TODO Auto-generated method stub
+		List<String> words = new ArrayList<String>();
+		ArrayList<Character> first=new ArrayList<Character>();
+		ArrayList<Character> last=new ArrayList<Character>();
+		int j=0;
+		int k=0;
+		int x=0;
+		int y=1;
+		File file = new File("Gone with the Wind.txt");
+		if(!file.exists()) {
+			 System.out.println("file inexists");
+			 System.exit(0);
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "gbk"));
+		String line=null;
+		try {
+			while ((line = br.readLine()) != null) {
+	            StringTokenizer st = new StringTokenizer(line," ,? . ! : \" \n #");
+				while (st.hasMoreElements()) {
+					words.add(st.nextToken());
+				}
+	        }
+			br.close();
+		}catch(Exception e) {
+			e.getStackTrace();
+		}finally {
+			for(int i=0;i<words.size();i++) {
+				//System.out.println(words.get(i));
+				//for(j=0;j<words.get(i).length();j++) {
+				char f=words.get(i).charAt(0);
+				char l=words.get(i).charAt(words.get(i).length()-1);
+				if((f>='A' && f<='Z')){
+		            f+=32;
+		        }
+				if((l>='A' && l<='Z')){
+		            l+=32;
+		        }
+				first.add(f);//第n个单词的第1个字母
+				last.add(l);//第n个单词的第最后1个字母
+					//System.out.print(f+" "+l);
+				//}
+				//j=0;
+			}
+			for(x=0;x<first.size();x++) {
+				
+				for(y=1;y<last.size();y++) {
+					
+					if(last.get(x)==first.get(y)) {
+						k++;
+						if(k==1) {
+							System.out.print(words.get(x)+" "+words.get(y));
+						}
+						System.out.print(" "+words.get(y));
+						x=y;
+						y=y+1;
+					}
+				}
+				
+				System.out.println(k);
+			}
+			
+		}
+	}
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		wind.word();
+	}
